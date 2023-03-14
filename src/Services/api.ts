@@ -14,9 +14,9 @@ interface LoginResponseData {
 }
 
 interface SigninRequestData {
-    "email": string,
     "fname": string,
     "lname": string,
+    "email": string,
     "password": string,
     "phone_number": number
 }
@@ -35,7 +35,6 @@ export const login =async (requestData: LoginRequestData): Promise<LoginResponse
 
 export const signin = async (requestData: SigninRequestData): Promise<SigninResponseData> => {
     const response: AxiosResponse<SigninResponseData> = await axios.post(`${API_BASE_URL}/users/signup`, requestData);
-    console.log(response.data);
     return response.data;
 }
 

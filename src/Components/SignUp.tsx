@@ -7,7 +7,6 @@ import { AppState } from "../Store";
 
 export interface State extends SnackbarOrigin {
     open: boolean;
-    severity: AlertColor | undefined
 }
 
 const SignUp = () => {
@@ -15,13 +14,11 @@ const SignUp = () => {
     const [openSnackbar, setOpenSnackbar] = useState<State>({
         open: false,
         vertical: 'top',
-        horizontal: 'center',
-        severity: 'error'
+        horizontal: 'center'
     });
 
-    const token = useSelector((state: AppState) => state.auth.token);
+    const token = useSelector((state: AppState) => state.signup.token);
     const error = useSelector((state: AppState) => state.signup.error);
-
     const {vertical, horizontal, open} = openSnackbar;
 
     const [signupState, setSignupState] = useState({
@@ -37,16 +34,10 @@ const SignUp = () => {
     const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         dispatch(SignupRequest(signupState.fname, signupState.lname, signupState.email, signupState.password, signupState.phone_number));
-        if(token)
-        {
-            setOpenSnackbar({open: true, horizontal: 'center' ,vertical: 'top', severity: 'success'});
-        }
-        else
-        {
-            setOpenSnackbar({open: true, horizontal: 'center' ,vertical: 'top', severity: 'error'});
-        }
-
+        setOpenSnackbar({open: true, horizontal: 'center' ,vertical: 'top'});
+        console.log("Inside handler: ", token);
     }
+    console.log("Outside Handler: ", token);
     
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
@@ -119,10 +110,11 @@ const SignUp = () => {
                     type='number'
                     onChange={(e) => {setSignupState({...signupState, phone_number: parseInt(e.target.value)})}}></TextField>
                 <Button variant="contained" type='submit'>Sign Up</Button>
-                <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{vertical, horizontal}}>
-                    <Alert severity={openSnackbar.severity}>
-                        {token? "User created successfully" : "User already exist"}
-                    </Alert>
+                <Snackbar open={open} autoHideDuration={1500} onClose={handleClose} anchorOrigin={{vertical, horizontal}}>
+                    {!token? 
+                        <Alert severity="error">User already exist</Alert> :
+                        <Alert severity="success">User created successfully</Alert>
+                    }
                 </Snackbar>
                 </Box>
             </div>

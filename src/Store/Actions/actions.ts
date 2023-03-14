@@ -87,16 +87,17 @@ export const logout = () => ({
     type: AuthActionTypes.LOGOUT
 })
 
-export const SignupRequest = (email: string, 
+export const SignupRequest = ( 
     fname: string, 
-    lname: string, 
+    lname: string,
+    email: string,
     password: string, 
     phone_number: number): SigninRequestAction => ({
     type: AuthActionTypes.SIGNIN_REQUEST,
     payload: {
-        email,
         fname,
         lname,
+        email,
         password,
         phone_number
     }
